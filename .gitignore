@@ -1,0 +1,5 @@
+.terraform
+.terraform.lock.hcl
+snapshot-deletion.zip
+terraform.tfstate
+tfplan.out
