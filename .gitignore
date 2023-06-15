@@ -1,5 +1,6 @@
 .terraform
 .terraform.lock.hcl
+.terraform.tfstate.backup
 snapshot-deletion.zip
 terraform.tfstate
 tfplan.out
