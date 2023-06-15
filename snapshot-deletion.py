@@ -1,19 +1,46 @@
-import json
-import random
-import string
-import random
-import string
-import re
+import boto3
+import datetime
+import getopt
+
+############################################################
+# leifCleanAwsEc2Snapshots                                                                                     
+# Script will delete all snapshots created before dateLimit.                                
+# ALL SNAPSHOTS OLDER THAN THIS DATE WILL BE DELETED!!!                       
+dateLimit = datetime.datetime(2023, 6, 16)    # yyyy, mm, dd                           
+############################################################
+
+#AWS Settings
+client = boto3.client('ec2',region_name='eu-north-1')
+snapshots = client.describe_snapshots(OwnerIds=['AKIA4UCIZ5C4KQJSXZ57'])
+
 def lambda_handler(event, context):
-    max=8
-    password=''.join(random.choices(string.ascii_lowercase+string.ascii_uppercase, k=max))
-    mandatory=''.join(''.join(random.choices(choice)) for choice in [string.ascii_lowercase, string.ascii_uppercase, "_@", string.digits])
-    passwordlist=list(password+mandatory)
-    random.shuffle(passwordlist)
-    while re.match("^[0-9]|@|_",''.join(list(passwordlist))) != None:
-        random.shuffle(passwordlist)
-        passwordlist=list(password+mandatory)
-    return {
-        'statusCode': 200,
-        'body': json.dumps(''.join(list(passwordlist)))
-    }
+    
+    # Calculate the number of days ago the date limit is.
+    dateToday = datetime.datetime.now()
+    dateDiff=dateToday-dateLimit
+    
+    # Could base this clean-up on the number of snapshots too.
+    #snapshotCount=len(snapshots['Snapshots'])
+for snapshot in snapshots['Snapshots']:
+        a=snapshot['StartTime']
+        b=a.date()
+        c=datetime.datetime.now().date()
+        d=c-b
+        try:
+            if d.days>dateDiff.days:
+                id = snapshot['SnapshotId']
+                started = snapshot['StartTime']
+                print(id + "********************")
+                print(started)
+                #Uncomment below line for "live run"
+                #client.delete_snapshot(SnapshotId=id)
+                print("DELETED^^^^^^^^^^^^^^^^^^")
+        except getopt.GetoptError as e:
+            if 'InvalidSnapshot.InUse' in e.message:
+                print("skipping this snapshot")
+                continue
+
+
+
+#             AWSLambdaBasicExecutionRole = arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+# AWSXRayDaemonWriteAccess = arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
