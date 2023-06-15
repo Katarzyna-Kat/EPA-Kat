@@ -11,7 +11,7 @@ dateLimit = datetime.datetime(2023, 6, 16)    # yyyy, mm, dd
 
 #AWS Settings
 client = boto3.client('ec2',region_name='eu-north-1')
-snapshots = client.describe_snapshots(OwnerIds=['AKIA4UCIZ5C4KQJSXZ57'])
+snapshots = client.describe_snapshots(OwnerIds=['i-0a425e5ffbb6c01ec'])
 
 def lambda_handler(event, context):
     
@@ -39,8 +39,3 @@ for snapshot in snapshots['Snapshots']:
             if 'InvalidSnapshot.InUse' in e.message:
                 print("skipping this snapshot")
                 continue
-
-
-
-#             AWSLambdaBasicExecutionRole = arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-# AWSXRayDaemonWriteAccess = arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
