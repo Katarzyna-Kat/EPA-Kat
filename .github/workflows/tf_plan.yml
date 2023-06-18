@@ -1,7 +1,9 @@
 name: "Terraform Plan"
 
 on:
-  pull_request:
+  # pull_request:
+  push:
+    branches: epa-3
 
 env:
   TF_CLOUD_ORGANIZATION: "kpolonkiewicz"
@@ -11,7 +13,7 @@ env:
 
 jobs:
   terraform:
-    if: github.repository != 'Katarzyna-Kat/EPA-Kat'
+    # if: github.repository != 'Katarzyna-Kat/EPA-Kat'
     name: "Terraform Plan"
     runs-on: ubuntu-latest
 
