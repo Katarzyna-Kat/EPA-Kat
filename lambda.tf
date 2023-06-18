@@ -1,5 +1,5 @@
 provider "aws" {
-  region =var.aws_region
+  region = var.aws_region
 }
 provider "archive" {}
 data "archive_file" "zip" {
@@ -63,4 +63,24 @@ resource "aws_lambda_function" "lambda" {
   role    = aws_iam_role.snapshot_deletion_lambda.arn
   handler = "snapshot-deletion.lambda_handler"
   runtime = "python3.9"
+}
+
+resource "aws_cloudwatch_event_rule" "every_5_days" {
+    name = "every-5_days"
+    description = "Trigger to run once every 5 days"
+    schedule_expression = "cron(0 9 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "lambda_5_days" {
+    rule = aws_cloudwatch_event_rule.every_5_days.name
+    target_id = "lambda"
+    arn = aws_lambda_function.lambda.arn
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
+    statement_id = "AllowExecutionFromCloudWatch"
+    action = "lambda:InvokeFunction"
+    function_name = aws_lambda_function.lambda.function_name
+    principal = "events.amazonaws.com"
+    source_arn = aws_cloudwatch_event_rule.every_5_days.arn
 }
