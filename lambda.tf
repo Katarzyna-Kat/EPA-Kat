@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket                  = "tf-state-epa"
+    key                     = "terraform-epa"
+    region                  = "eu-north-1"
+    shared_credentials_file = "~/.aws/credentials"
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }

@@ -4,3 +4,4 @@
 snapshot-deletion.zip
 terraform.tfstate
 tfplan.out
+terraform.tfstate.backup
