@@ -1,9 +1,10 @@
 name: "Terraform Plan"
 
 on:
-  pull_request:
-  # push:
-  #   branches: epa-3
+  workflow-dispatch:
+  # pull_request:
+  # # push:
+  # #   branches: epa-3
 
 env:
   TF_CLOUD_ORGANIZATION: "kpolonkiewicz"
