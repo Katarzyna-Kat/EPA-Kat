@@ -47,13 +47,13 @@ jobs:
         with:
           plan: ${{ fromJSON(steps.plan-run.outputs.payload).data.relationships.plan.data.id }}
 
-      - name: Terraform init
-        id: init
-        run: terraform init
+      # - name: Terraform init
+      #   id: init
+      #   run: terraform init
 
-      - name: Terraform plan
-        id: plan
-        run: terraform plan -out tfplan.out
+      # - name: Terraform plan
+      #   id: plan
+      #   run: terraform plan -out tfplan.out
 
       # - name: Update PR
       #   uses: actions/github-script@v6
