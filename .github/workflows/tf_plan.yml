@@ -83,16 +83,19 @@ jobs:
       #         body: output
       #       });
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          directory: ${{ env.CONFIG_DIRECTORY }}
+          speculative: true
+
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -recursive
 
       - name: Terraform Init
         id: init
-        with:
-          workspace: ${{ env.TF_WORKSPACE }}
-          directory: ${{ env.CONFIG_DIRECTORY }}
-          speculative: true
         run: terraform init -no-color
 
       - name: Terraform Validate
