@@ -89,11 +89,11 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -no-color
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.CONFIG_DIRECTORY }}
           speculative: true
+        run: terraform init -no-color
 
       - name: Terraform Validate
         id: validate
