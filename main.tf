@@ -93,6 +93,11 @@ resource "aws_cloudwatch_event_target" "lambda_5_days" {
     rule = aws_cloudwatch_event_rule.every_5_days.name
     target_id = "lambda"
     arn = aws_lambda_function.lambda.arn
+    input = <<JSON
+  {
+    "dry_run": false
+  }
+  JSON
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
