@@ -8,55 +8,72 @@ import getopt
 # leifCleanAwsEc2Snapshots
 # Script will delete all snapshots created before dateLimit.
 # ALL SNAPSHOTS OLDER THAN THIS DATE WILL BE DELETED!!!
-dateLimit = datetime.datetime(2023, 6, 17)
+dateLimit = datetime.datetime(2023, 6, 16)
 dateEmail = datetime.datetime(2023, 6, 20)
 ############################################################
 
 # AWS Settings
-client = boto3.client("ec2", region_name="eu-north-1")
-snapshots = client.describe_snapshots(OwnerIds=["867736086712"])
+ec2_client = boto3.client("ec2", region_name="eu-north-1")
+snapshots = ec2_client.describe_snapshots(OwnerIds=["867736086712"])
+dateToday = datetime.datetime.now()
+
+def date_limit_function(today_date):
+    dateDiff = today_date - dateLimit
+    dateDiffEmail = today_date - dateEmail
+    # timedelta(days=1)
+    return [dateDiff, dateDiffEmail]
+
+
+def deletion_of_snapshots_function(snapshots_id, snapshots_date, dry_run):
+    print("SNAPSHOT TO BE DELETED:")
+    print(snapshots_id, snapshots_date)
+    try:
+        if dry_run == False:
+            ec2_client.delete_snapshot(SnapshotId=snapshots_id)
+            print("DELETED^^^^^^^^^^^^^^^^^^")
+        else:
+            ec2_client.delete_snapshot(SnapshotId=snapshots_id, DryRun = True)
+    except Exception as e:
+        if type(e) == getopt.GetoptError and "InvalidSnapshot.InUse" in e.message:
+            print("Skipping this snapshot - this snapshot is in use^^^^^^^^^^^^^^^^^^^^")
+        else:
+            print("Something went wrong.")
+            print(e)
+            print("The snapshot could not be deleted^^^^^^^^^^^^^^^^^^^^")
+
+
+def log_of_snapshots_ids_and_dates():
+    list_of_ids = []
+    list_of_dates = []
+    def snapshot_log(snapshots_id, snapshots_date):
+        list_of_ids.append(snapshots_id)
+        list_of_dates.append(snapshots_date)
+    def retrieve_snapshot_logs():
+        dates_changed_format = [str(x) for x in list_of_dates]
+        dictionary_of_ids_and_dates = {list_of_ids[i]: dates_changed_format[i] for i in range(len(list_of_ids))}
+        return dictionary_of_ids_and_dates
+    return [snapshot_log, retrieve_snapshot_logs]
 
 
 def lambda_handler(event, context):
-
-    # Calculate the number of days ago the date limit is.
-    dateToday = datetime.datetime.now()
-    dateDiff = dateToday - dateLimit
-    dateDiffEmail = dateToday - dateEmail
-    # timedelta(days=1)
-    sns_client = boto3.client('sns')
-    list_of_ids = []
-    list_of_dates = []
-
-    # Could base this clean-up on the number of snapshots too.
-    # snapshotCount=len(snapshots['Snapshots'])
+    dry_run = event.get('dry_run', False)
+    print(dry_run)
+    [dateDiff, dateDiffEmail] = date_limit_function(dateToday)
+    sns_client = boto3.client("sns")
+    [snapshot_log, retrieve_snapshot_logs] = log_of_snapshots_ids_and_dates()
     for snapshot in snapshots["Snapshots"]:
-        a = snapshot["StartTime"]
-        b = a.date()
-        c = datetime.datetime.now().date()
-        d = c - b
-        try:
-            if d.days > dateDiff.days:
-                id = snapshot["SnapshotId"]
-                started = snapshot["StartTime"]
-                print(id + "********************")
-                print(started)
-                # Uncomment below line for "live run"
-                # client.delete_snapshot(SnapshotId=id)
-                print("DELETED^^^^^^^^^^^^^^^^^^")
-            elif dateDiffEmail.days < d.days < dateDiff.days:
-                id_email = snapshot["SnapshotId"]
-                started_email = snapshot["StartTime"]
-                is_appending = list_of_ids.append(id_email)
-                dates_appending = list_of_dates.append(started_email)
-        except getopt.GetoptError as e:
-            if "InvalidSnapshot.InUse" in e.message:
-                print("skipping this snapshot")
-                break
-    dates_changed = [str(x) for x in list_of_dates]
-    email_total = {list_of_ids[i]: dates_changed[i] for i in range(len(list_of_ids))}
+        snapshots_id = snapshot["SnapshotId"]
+        snapshots_date = snapshot["StartTime"].date()
+        today_delta = dateToday.date() - snapshots_date
+
+        if today_delta.days > dateDiff.days:
+            deletion_of_snapshots_function(snapshots_id, snapshots_date, dry_run)
+
+        elif dateDiffEmail.days < today_delta.days < dateDiff.days:
+            snapshot_log(snapshots_id, snapshots_date)
+
     sns_client.publish(
-    TopicArn='$(aws_sns_topic.user_updates.arn)',
-    Subject='Deletion of snapshots.',
-    Message= json.dumps(email_total),
+        TopicArn="$(aws_sns_topic.user_updates.arn)",
+        Subject="Deletion of snapshots.",
+        Message=json.dumps(retrieve_snapshot_logs()),
     )
