@@ -49,6 +49,10 @@ data "aws_iam_policy" "AWSXRayDaemonWriteAccess" {
     arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
 }
 
+data "aws_iam_policy" "AmazonSNSFullAccess" {
+    arn = "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
+}
+
 ### attaching policies
 resource "aws_iam_role_policy_attachment" "Policy_attachment_EC2" {
   role       = "${aws_iam_role.snapshot_deletion_lambda.name}"
@@ -63,6 +67,11 @@ resource "aws_iam_role_policy_attachment" "Policy_attachment_Lambda" {
 resource "aws_iam_role_policy_attachment" "Policy_attachment_xRay" {
   role       = "${aws_iam_role.snapshot_deletion_lambda.name}"
   policy_arn = "${data.aws_iam_policy.AWSXRayDaemonWriteAccess.arn}"
+}
+
+resource "aws_iam_role_policy_attachment" "Policy_attachment_SNS" {
+  role       = "${aws_iam_role.snapshot_deletion_lambda.name}"
+  policy_arn = "${data.aws_iam_policy.AmazonSNSFullAccess.arn}"
 }
 
 resource "aws_lambda_function" "lambda" {
