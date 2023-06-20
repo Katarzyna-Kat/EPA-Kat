@@ -1,0 +1,41 @@
+{
+    "Version": "2012-10-17",
+    "Id": "kms_policy",
+    "Statement": [
+        {
+            "Sid": "Enable IAM User Permissions",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::867736086712:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": [
+                    "logs.eu-west-1.amazonaws.com",
+                    "s3.amazonaws.com",
+                    "sns.amazonaws.com",
+                    "ses.amazonaws.com",
+                    "sqs.amazonaws.com",
+                    "ec2.amazonaws.com",
+                    "events.amazonaws.com",
+                    "ssm.amazonaws.com",
+                    "cloudwatch.amazonaws.com"
+                ]
+            },
+            "Action": [
+                "kms:Encrypt*",
+                "kms:Decrypt*",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:Describe*",
+                "sqs:SendMessage",
+                "sqs:ReceiveMessage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
