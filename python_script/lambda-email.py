@@ -13,12 +13,13 @@ dateLimit = datetime.datetime(2023, 1, 1)
 client = boto3.client("ec2", region_name="eu-north-1")
 snapshots = client.describe_snapshots(OwnerIds=["867736086712"])
 
-
 def lambda_handler(event, context):
-
+    
     # Calculate the number of days ago the date limit is.
-    dateToday = datetime.today() - timedelta(days=1)
+    dateToday = datetime.today() - timedelta(days=2)
     dateDiff = dateToday
+    check = 0
+    sns_client = boto3.client('sns')
 
     # Could base this clean-up on the number of snapshots too.
     # snapshotCount=len(snapshots['Snapshots'])
@@ -33,10 +34,14 @@ def lambda_handler(event, context):
                 started = snapshot["StartTime"]
                 print(id + "********************")
                 print(started)
-                # Uncomment below line for "live run"
-                # client.delete_snapshot(SnapshotId=id)
                 print("DELETED^^^^^^^^^^^^^^^^^^")
+                check += 1
         except getopt.GetoptError as e:
             if "InvalidSnapshot.InUse" in e.message:
                 print("skipping this snapshot")
                 continue
+    if check > 0:
+        sns_client.publish(
+        TopicArn='$aws_sns_topic.user_updates.arn',
+        Subject='Deletion of snapshots.',
+        Message='hello',)

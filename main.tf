@@ -10,6 +10,7 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
+
 provider "archive" {}
 data "archive_file" "zip" {
   type        = "zip"
@@ -65,6 +66,7 @@ resource "aws_iam_role_policy_attachment" "Policy_attachment_xRay" {
   policy_arn = "${data.aws_iam_policy.AWSXRayDaemonWriteAccess.arn}"
 }
 
+### lambda function
 resource "aws_lambda_function" "lambda" {
   function_name = "snapshot-deletion"
   filename         = data.archive_file.zip.output_path
