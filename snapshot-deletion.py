@@ -1,25 +1,27 @@
 import boto3
 from datetime import datetime, timedelta
+import datetime
 import getopt
 
 ############################################################
 # leifCleanAwsEc2Snapshots
 # Script will delete all snapshots created before dateLimit.
 # ALL SNAPSHOTS OLDER THAN THIS DATE WILL BE DELETED!!!
-dateLimit = datetime.datetime(2023, 1, 1)
+dateLimit = datetime.datetime(2023, 6, 17)
 ############################################################
 
 # AWS Settings
 client = boto3.client("ec2", region_name="eu-north-1")
 snapshots = client.describe_snapshots(OwnerIds=["867736086712"])
-dateDiff = dateToday - dateLimit
-sns_client = boto3.client('sns')
+
 
 def lambda_handler(event, context):
 
     # Calculate the number of days ago the date limit is.
-    dateToday = datetime.today() - timedelta(days=1)
-    dateDiff = dateToday
+    dateToday = datetime.datetime.now()
+    dateDiff = dateToday - dateLimit
+    #timedelta(days=1)
+    sns_client = boto3.client('sns')
 
     # Could base this clean-up on the number of snapshots too.
     # snapshotCount=len(snapshots['Snapshots'])
@@ -37,11 +39,11 @@ def lambda_handler(event, context):
                 # Uncomment below line for "live run"
                 # client.delete_snapshot(SnapshotId=id)
                 print("DELETED^^^^^^^^^^^^^^^^^^")
-                sns_client.publish(
-                TopicArn='arn:aws:sns:eu-north-1:867736086712:snapshot-deletion',
-                Subject='Deletion of snapshots.',
-                Message= 'hello',
-                )
+                # sns_client.publish(
+                # TopicArn='arn:aws:sns:eu-north-1:867736086712:snapshot-deletion',
+                # Subject='Deletion of snapshots.',
+                # Message= 'hello',
+                # )
         except getopt.GetoptError as e:
             if "InvalidSnapshot.InUse" in e.message:
                 print("skipping this snapshot")
