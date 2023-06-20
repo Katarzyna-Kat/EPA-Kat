@@ -1,6 +1,6 @@
 import boto3
 import json
-from python.main_functions import *
+from functions_folder.main_functions import *
 # from datetime import datetime, timedelta
 # import datetime
 # import getopt

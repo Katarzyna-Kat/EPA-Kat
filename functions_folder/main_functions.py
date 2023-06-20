@@ -24,7 +24,7 @@ def date_limit_function(today_date):
     return [dateDiff, dateDiffEmail]
 
 
-def deletion_of_snapshots_function(snapshots_id, snapshots_date, dry_run):
+def deletion_of_snapshots_function(snapshots_id, snapshots_date, dry_run, ec2_client = ec2_client):
     print("SNAPSHOT TO BE DELETED:")
     print(snapshots_id, snapshots_date)
     try:
