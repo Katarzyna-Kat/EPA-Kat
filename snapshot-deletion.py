@@ -1,4 +1,5 @@
 import boto3
+import json
 from datetime import datetime, timedelta
 import datetime
 import getopt
@@ -8,6 +9,7 @@ import getopt
 # Script will delete all snapshots created before dateLimit.
 # ALL SNAPSHOTS OLDER THAN THIS DATE WILL BE DELETED!!!
 dateLimit = datetime.datetime(2023, 6, 17)
+dateEmail = datetime.datetime(2023, 6, 20)
 ############################################################
 
 # AWS Settings
@@ -20,8 +22,11 @@ def lambda_handler(event, context):
     # Calculate the number of days ago the date limit is.
     dateToday = datetime.datetime.now()
     dateDiff = dateToday - dateLimit
-    #timedelta(days=1)
+    dateDiffEmail = dateToday - dateEmail
+    # timedelta(days=1)
     sns_client = boto3.client('sns')
+    list_of_ids = []
+    list_of_dates = []
 
     # Could base this clean-up on the number of snapshots too.
     # snapshotCount=len(snapshots['Snapshots'])
@@ -39,12 +44,19 @@ def lambda_handler(event, context):
                 # Uncomment below line for "live run"
                 # client.delete_snapshot(SnapshotId=id)
                 print("DELETED^^^^^^^^^^^^^^^^^^")
-                # sns_client.publish(
-                # TopicArn='arn:aws:sns:eu-north-1:867736086712:snapshot-deletion',
-                # Subject='Deletion of snapshots.',
-                # Message= 'hello',
-                # )
+            elif dateDiffEmail.days < d.days < dateDiff.days:
+                id_email = snapshot["SnapshotId"]
+                started_email = snapshot["StartTime"]
+                is_appending = list_of_ids.append(id_email)
+                dates_appending = list_of_dates.append(started_email)
         except getopt.GetoptError as e:
             if "InvalidSnapshot.InUse" in e.message:
                 print("skipping this snapshot")
-                continue
+                break
+    dates_changed = [str(x) for x in list_of_dates]
+    email_total = {list_of_ids[i]: dates_changed[i] for i in range(len(list_of_ids))}
+    sns_client.publish(
+    TopicArn='arn:aws:sns:eu-north-1:867736086712:snapshot-deletion',
+    Subject='Deletion of snapshots.',
+    Message= json.dumps(email_total),
+    )
