@@ -56,7 +56,7 @@ def lambda_handler(event, context):
     dates_changed = [str(x) for x in list_of_dates]
     email_total = {list_of_ids[i]: dates_changed[i] for i in range(len(list_of_ids))}
     sns_client.publish(
-    TopicArn='arn:aws:sns:eu-north-1:867736086712:snapshot-deletion',
+    TopicArn='$(aws_sns_topic.user_updates.arn)',
     Subject='Deletion of snapshots.',
     Message= json.dumps(email_total),
     )
