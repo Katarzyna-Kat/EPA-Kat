@@ -13,8 +13,8 @@ provider "aws" {
 provider "archive" {}
 data "archive_file" "zip" {
   type        = "zip"
-  source_file = "snapshot-deletion.py"
-  output_path = "snapshot-deletion.zip"
+  source_dir = "${var.upload_file_path}/main_code/"
+  output_path = "${var.upload_file_path}/snapshot-deletion.zip"
 }
 
 ### trust relationship
@@ -86,7 +86,7 @@ resource "aws_lambda_function" "lambda" {
 resource "aws_cloudwatch_event_rule" "every_5_days" {
     name = "every-5_days"
     description = "Trigger to run once every 5 days"
-    schedule_expression = "cron(0 9 * * ? *)"
+    schedule_expression = "cron(0/5 8-18 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda_5_days" {
@@ -95,7 +95,7 @@ resource "aws_cloudwatch_event_target" "lambda_5_days" {
     arn = aws_lambda_function.lambda.arn
     input = <<JSON
   {
-    "dry_run": false
+    "dry_run": true
   }
   JSON
 }

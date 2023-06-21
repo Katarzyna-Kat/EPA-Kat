@@ -6,3 +6,4 @@ lambda-email.zip
 terraform.tfstate
 tfplan.out
 terraform.tfstate.backup
+__pycache__

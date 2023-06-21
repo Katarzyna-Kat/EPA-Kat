@@ -5,3 +5,7 @@ variable "aws_region" {
 variable "email" {
   default     = "k.polonkiewicz@gmail.com"
 }
+
+variable "upload_file_path" {
+  default     = "functions_folder"
+}

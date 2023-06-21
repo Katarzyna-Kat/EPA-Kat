@@ -1,6 +1,6 @@
 import boto3
 import json
-from functions_folder.main_functions import *
+from main_functions import *
 # from datetime import datetime, timedelta
 # import datetime
 # import getopt
@@ -81,7 +81,7 @@ def lambda_handler(event, context):
             snapshot_log(snapshots_id, snapshots_date)
 
     sns_client.publish(
-        TopicArn="$(aws_sns_topic.user_updates.arn)",
+        TopicArn="arn:aws:sns:eu-north-1:867736086712:snapshot-deletion",
         Subject="Deletion of snapshots.",
         Message=json.dumps(retrieve_snapshot_logs()),
     )
