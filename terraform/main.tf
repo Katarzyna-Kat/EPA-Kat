@@ -1,15 +1,47 @@
+###### tf config
 terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      Version = "~> 3.0" 
+    }
+  }
+  required_version = ">=0.14.9"
+
   backend "s3" {
     bucket                  = "tf-state-epa"
     key                     = "terraform-epa"
     region                  = "eu-north-1"
-    shared_credentials_file = "~/.aws/credentials"
   }
 }
 
 provider "aws" {
   region = var.aws_region
 }
+
+resource "aws_s3_bucket" "s3Bucket" {
+     bucket    = "tf-state-epa"
+     acl       = "public-read"
+
+     policy  = <<EOF
+{
+     "id" : "MakePublic",
+   "version" : "2012-10-17",
+   "statement" : [
+      {
+         "action" : [
+             "s3:GetObject"
+          ],
+         "effect" : "Allow",
+         "resource" : "arn:aws:s3:::tf-state-epa/*",
+         "principal" : "*"
+      }
+    ]
+  }
+EOF
+}
+
+#######    shared_credentials_file = "~/.aws/credentials"
 
 
 ####### zipping python
