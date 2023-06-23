@@ -48,9 +48,9 @@ jobs:
     - name: Terraform Validate
       uses: hashicorp/terraform-github-actions/validate@v0.3.7
 
-    - name: Terraform init
-      run: |
-        terraform init
+    # - name: Terraform init
+    #   run: |
+    #     terraform init
         
     - name: Terraform plan
       run: |
