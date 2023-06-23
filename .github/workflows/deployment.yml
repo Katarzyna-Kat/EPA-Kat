@@ -38,7 +38,7 @@ jobs:
     - name: Terraform Apply
       run: |
         cd terraform
-        terraform appy -auto-approve
+        terraform apply tfplan.out
 
 
 
