@@ -34,6 +34,13 @@ jobs:
 
 
 
+    - name: Terraform Apply
+      run: |
+        cd terraform
+        terraform plan -out tfplan.out
+
+
+
 
     - name: Terraform Apply
       run: |
