@@ -1,5 +1,7 @@
 name: "Lambda Deployment"
 
+run-name: ${{ github.ref_name }} by @${{ github.actor  }}
+
 on:
   push:
 
