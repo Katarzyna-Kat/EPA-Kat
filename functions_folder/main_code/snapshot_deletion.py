@@ -81,7 +81,7 @@ def lambda_handler(event, context):
             snapshot_log(snapshots_id, snapshots_date)
 
     sns_client.publish(
-        TopicArn="arn:aws:sns:eu-north-1:867736086712:snapshot-deletion",
+        TopicArn='arn:aws:sns:eu-north-1:867736086712:snapshot_deletion',
         Subject="Deletion of snapshots.",
         Message=json.dumps(retrieve_snapshot_logs()),
     )

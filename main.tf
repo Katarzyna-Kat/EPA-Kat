@@ -14,7 +14,7 @@ provider "archive" {}
 data "archive_file" "zip" {
   type        = "zip"
   source_dir = "${var.upload_file_path}/main_code/"
-  output_path = "${var.upload_file_path}/snapshot-deletion.zip"
+  output_path = "${var.upload_file_path}/snapshot_deletion.zip"
 }
 
 ### trust relationship
@@ -75,18 +75,20 @@ resource "aws_iam_role_policy_attachment" "Policy_attachment_SNS" {
 }
 
 resource "aws_lambda_function" "lambda" {
-  function_name = "snapshot-deletion"
+  function_name = "snapshot_deletion"
   filename         = data.archive_file.zip.output_path
   source_code_hash = data.archive_file.zip.output_base64sha256
   role    = aws_iam_role.snapshot_deletion_lambda.arn
-  handler = "snapshot-deletion.lambda_handler"
+  handler = "snapshot_deletion.lambda_handler"
   runtime = "python3.9"
+  timeout = "60"
 }
 
+##### trigger
 resource "aws_cloudwatch_event_rule" "every_5_days" {
-    name = "every-5_days"
+    name = "every_5_days"
     description = "Trigger to run once every 5 days"
-    schedule_expression = "cron(0/5 8-18 * * ? *)"
+    schedule_expression = "cron(0/5 8-18 ? * MON-FRI *)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda_5_days" {
@@ -95,7 +97,7 @@ resource "aws_cloudwatch_event_target" "lambda_5_days" {
     arn = aws_lambda_function.lambda.arn
     input = <<JSON
   {
-    "dry_run": true
+    "dry_run": false
   }
   JSON
 }
