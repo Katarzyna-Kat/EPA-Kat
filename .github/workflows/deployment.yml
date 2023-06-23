@@ -19,7 +19,6 @@ jobs:
       with:
         tf_var_aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         tf_var_aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    - uses: another-action-that-has-a-cleanup-step@v1
 
     # - name: Run pytest
     #   run: |
