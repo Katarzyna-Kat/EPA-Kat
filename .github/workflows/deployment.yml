@@ -1,0 +1,36 @@
+name: "Lambda Deployment"
+
+on:
+  push:
+
+env:
+  TF_CLOUD_ORGANIZATION: "kpolonkiewicz"
+  TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
+  TF_WORKSPACE: "EPA-terraform-github-actions"
+  CONFIG_DIRECTORY: "./"
+
+jobs:
+  terraform:
+    name: "Terraform Plan"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Upload Configuration
+        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
+        id: plan-upload
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          directory: ${{ env.CONFIG_DIRECTORY }}
+          speculative: true
+
+      - name: Run pytest
+        run: |
+          pip install -r requirements.txt
+          pytest
