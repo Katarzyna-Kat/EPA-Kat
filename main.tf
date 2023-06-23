@@ -10,6 +10,9 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
+
+
+
 provider "archive" {}
 data "archive_file" "zip" {
   type        = "zip"
@@ -53,6 +56,10 @@ data "aws_iam_policy" "AmazonSNSFullAccess" {
     arn = "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
 }
 
+data "aws_iam_policy" "AmazonS3FullAccess" {
+    arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
 ### attaching policies
 resource "aws_iam_role_policy_attachment" "Policy_attachment_EC2" {
   role       = "${aws_iam_role.snapshot_deletion_lambda.name}"
@@ -72,6 +79,11 @@ resource "aws_iam_role_policy_attachment" "Policy_attachment_xRay" {
 resource "aws_iam_role_policy_attachment" "Policy_attachment_SNS" {
   role       = "${aws_iam_role.snapshot_deletion_lambda.name}"
   policy_arn = "${data.aws_iam_policy.AmazonSNSFullAccess.arn}"
+}
+
+resource "aws_iam_role_policy_attachment" "Policy_attachment_S3" {
+  role       = "${aws_iam_role.snapshot_deletion_lambda.name}"
+  policy_arn = "${data.aws_iam_policy.AmazonS3FullAccess.arn}"
 }
 
 resource "aws_lambda_function" "lambda" {
