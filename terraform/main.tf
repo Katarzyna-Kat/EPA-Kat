@@ -11,7 +11,7 @@ provider "aws" {
 }
 
 
-####### zipping python
+##### zipping python
 provider "archive" {}
 data "archive_file" "zip" {
   type        = "zip"
