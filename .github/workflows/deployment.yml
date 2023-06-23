@@ -23,14 +23,52 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v1
 
+    # - name: Terraform Init
+    #   uses: hashicorp/terraform-github-actions/init@v0.4.0
+    #   with:
+    #     workspace: ${{ env.TF_WORKSPACE }}
+    #     directory: ${{ env.CONFIG_DIRECTORY }}
+
+    # - name: Terraform Validate
+    #   uses: hashicorp/terraform-github-actions/validate@v0.3.7
+
     - name: Terraform Init
-      uses: hashicorp/terraform-github-actions/init@v0.4.0
-      with:
-        workspace: ${{ env.TF_WORKSPACE }}
-        directory: ${{ env.CONFIG_DIRECTORY }}
+      run: |
+        cd terraform
+        terraform init
 
     - name: Terraform Validate
       uses: hashicorp/terraform-github-actions/validate@v0.3.7
+
+    - name: Terraform Apply
+      run: |
+        cd terraform
+        terraform appy -auto-approve
+
+
+
+
+
+    # - name: Upload Configuration
+    #   uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
+    #   id: apply-upload
+    #   with:
+    #     workspace: ${{ env.TF_WORKSPACE }}
+    #     directory: ${{ env.CONFIG_DIRECTORY }}
+
+    # - name: Create Apply Run
+    #   uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
+    #   id: apply-run
+    #   with:
+    #     workspace: ${{ env.TF_WORKSPACE }}
+    #     configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
+
+    # - name: Apply
+    #   uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
+    #   id: apply
+    #   with:
+    #     run: ${{ steps.apply-run.outputs.run_id }}
+    #     comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
 
     # - name: Sync S3
     #   uses: jakejarvis/s3-sync-action@master
