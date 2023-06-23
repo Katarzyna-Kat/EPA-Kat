@@ -8,28 +8,23 @@ env:
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "EPA-terraform-github-actions"
   CONFIG_DIRECTORY: "./"
-  
-# permissions:
-#   id-token: write
-#   contents: read
 
 jobs:
   tf_fmt:
     name: Deploy Site
     runs-on: ubuntu-latest
 
-#     permissions:
-#       id-token: write
-#       contents: read
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-north-1
+        workspace: ${{ env.TF_WORKSPACE }}
+        directory: ${{ env.CONFIG_DIRECTORY }}
 
     # - name: Run pytest
     #   run: |
@@ -45,9 +40,6 @@ jobs:
     #     workspace: ${{ env.TF_WORKSPACE }}
     #     directory: ${{ env.CONFIG_DIRECTORY }}
 
-    # - name: Terraform Validate
-    #   uses: hashicorp/terraform-github-actions/validate@v0.3.7
-
     - name: Terraform init
       run: |
         terraform init
@@ -59,37 +51,3 @@ jobs:
     - name: Terraform Apply
       run: |
         terraform apply tfplan.out
-
-
-
-
-
-    # - name: Upload Configuration
-    #   uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
-    #   id: apply-upload
-    #   with:
-    #     workspace: ${{ env.TF_WORKSPACE }}
-    #     directory: ${{ env.CONFIG_DIRECTORY }}
-
-    # - name: Create Apply Run
-    #   uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
-    #   id: apply-run
-    #   with:
-    #     workspace: ${{ env.TF_WORKSPACE }}
-    #     configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
-
-    # - name: Apply
-    #   uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
-    #   id: apply
-    #   with:
-    #     run: ${{ steps.apply-run.outputs.run_id }}
-    #     comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
-
-    # - name: Sync S3
-    #   uses: jakejarvis/s3-sync-action@master
-    #   env:
-    #     SOURCE_DIR: './src'
-    #     AWS_REGION: 'eu-north-1'
-    #     AWS_S3_BUCKET: 'tf-state-epa'
-    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
