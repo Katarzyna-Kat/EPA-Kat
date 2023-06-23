@@ -8,3 +8,4 @@ tfplan.out
 terraform.tfstate.backup
 __pycache__
 functions_folder
+terraform.tfvars
