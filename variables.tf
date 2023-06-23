@@ -7,5 +7,5 @@ variable "email" {
 }
 
 variable "upload_file_path" {
-  default     = "functions_folder"
+  default     = "main_code"
 }
