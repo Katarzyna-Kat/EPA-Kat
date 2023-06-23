@@ -3,6 +3,7 @@ terraform {
     bucket                  = "tf-state-epa"
     key                     = "terraform-epa"
     region                  = "eu-north-1"
+    shared_credentials_file = "~/.aws/credentials"
   }
 }
 
