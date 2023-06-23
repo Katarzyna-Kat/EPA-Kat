@@ -25,6 +25,7 @@ jobs:
       with:
         workspace: ${{ env.TF_WORKSPACE }}
         directory: ${{ env.CONFIG_DIRECTORY }}
+        aws-region: eu-north-1
 
     # - name: Run pytest
     #   run: |
