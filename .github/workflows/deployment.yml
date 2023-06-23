@@ -44,10 +44,10 @@ jobs:
       run: |
         terraform init -reconfigure
         
-    # - name: Terraform plan
-    #   run: |
-    #     terraform plan -out tfplan.out
+    - name: Terraform plan
+      run: |
+        terraform plan -out tfplan.out
 
     - name: Terraform Apply
       run: |
-        terraform apply -auto-approve
+        terraform apply tfplan.out
