@@ -15,8 +15,8 @@ provider "aws" {
 provider "archive" {}
 data "archive_file" "zip" {
   type        = "zip"
-  source_dir = "${var.upload_file_path}/functions_folder/main_code/"
-  output_path = "${var.upload_file_path}/functions_folder/snapshot_deletion.zip"
+  source_dir = "${var.upload_file_path}/"
+  output_path = "${var.upload_file_path}/snapshot_deletion.zip"
 }
 
 ### trust relationship

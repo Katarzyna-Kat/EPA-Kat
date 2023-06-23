@@ -1,6 +1,6 @@
 import datetime
 from unittest.mock import Mock
-from functions_folder.main_code.main_functions import deletion_of_snapshots_function, log_of_snapshots_ids_and_dates
+from main_functions import deletion_of_snapshots_function, log_of_snapshots_ids_and_dates
 
 #### 2 functions for date_limit_function()
 
