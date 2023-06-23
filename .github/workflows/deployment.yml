@@ -39,18 +39,18 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v1
 
-    - name: Terraform Init
-      uses: hashicorp/terraform-github-actions/init@v0.4.0
-      with:
-        workspace: ${{ env.TF_WORKSPACE }}
-        directory: ${{ env.CONFIG_DIRECTORY }}
+    # - name: Terraform Init
+    #   uses: hashicorp/terraform-github-actions/init@v0.4.0
+    #   with:
+    #     workspace: ${{ env.TF_WORKSPACE }}
+    #     directory: ${{ env.CONFIG_DIRECTORY }}
 
-    - name: Terraform Validate
-      uses: hashicorp/terraform-github-actions/validate@v0.3.7
+    # - name: Terraform Validate
+    #   uses: hashicorp/terraform-github-actions/validate@v0.3.7
 
-    # - name: Terraform init
-    #   run: |
-    #     terraform init
+    - name: Terraform init
+      run: |
+        terraform init
         
     - name: Terraform plan
       run: |
