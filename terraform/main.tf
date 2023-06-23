@@ -11,9 +11,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-
-
-
 ####### zipping python
 provider "archive" {}
 data "archive_file" "zip" {
