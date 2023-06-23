@@ -13,6 +13,11 @@ jobs:
   tf_fmt:
     name: Deploy Site
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
 
     - uses: aws-actions/configure-aws-credentials@v1
