@@ -33,8 +33,13 @@ jobs:
       uses: hashicorp/terraform-github-actions/validate@v0.3.7
 
 
+    - name: Terraform init
+      run: |
+        cd terraform
+        terraform init
 
-    - name: Terraform Apply
+
+    - name: Terraform plan
       run: |
         cd terraform
         terraform plan -out tfplan.out
