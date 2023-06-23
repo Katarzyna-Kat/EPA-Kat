@@ -9,18 +9,18 @@ env:
   TF_WORKSPACE: "EPA-terraform-github-actions"
   CONFIG_DIRECTORY: "./"
   
-permissions:
-  id-token: write
-  contents: read
+# permissions:
+#   id-token: write
+#   contents: read
 
 jobs:
   tf_fmt:
     name: Deploy Site
     runs-on: ubuntu-latest
 
-    permissions:
-      id-token: write
-      contents: read
+#     permissions:
+#       id-token: write
+#       contents: read
 
     steps:
 
