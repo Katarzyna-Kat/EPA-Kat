@@ -75,10 +75,10 @@ def lambda_handler(event, context):
         snapshots_date = snapshot["StartTime"].date()
         today_delta = dateToday.date() - snapshots_date
 
-        if today_delta.days > dateDiff.days:
+        if today_delta.days > dateDiff.day:
             deletion_of_snapshots_function(snapshots_id, snapshots_date, dry_run)
 
-        elif dateDiffEmail.days < today_delta.days < dateDiff.days:
+        elif dateDiffEmail.day < today_delta.days < dateDiff.day:
             snapshot_log(snapshots_id, snapshots_date)
 
     sns_client.publish(
