@@ -1,6 +1,6 @@
 import boto3
-from datetime import datetime, timedelta
-import datetime
+# from datetime import datetime, timedelta
+# import datetime
 import getopt
 
 ############################################################
@@ -8,20 +8,20 @@ import getopt
 # Script will delete all snapshots created before dateLimit.
 # ALL SNAPSHOTS OLDER THAN THIS DATE WILL BE DELETED!!!
 # dateLimit = datetime.datetime(2023, 6, 24)
-dateEmail = datetime.datetime(2023, 6, 28)
+# dateEmail = datetime.datetime(2023, 6, 28)
 ############################################################
 
 # AWS Settings
 ec2_client = boto3.client("ec2", region_name="eu-north-1")
 snapshots = ec2_client.describe_snapshots(OwnerIds=["867736086712"])
-dateToday = datetime.datetime.now()
+# dateToday = datetime.datetime.now()
 
 
-def date_limit_function(today_date):
-    d = timedelta(days=3)
-    dateDiff = today_date - d
-    dateDiffEmail = today_date - dateEmail
-    return [dateDiff, dateDiffEmail]
+# def date_limit_function(today_date):
+#     d = timedelta(days=3)
+#     dateDiff = today_date - d
+#     dateDiffEmail = today_date - dateEmail
+#     return [dateDiff, dateDiffEmail]
 
 
 def deletion_of_snapshots_function(snapshots_id, snapshots_date, dry_run, ec2_client = ec2_client):
