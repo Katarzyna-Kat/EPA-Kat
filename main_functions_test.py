@@ -25,12 +25,24 @@ def test_invalid_snapshot_deletion_of_snapshots_function():
     ec2_client.delete_snapshot.assert_called_with(SnapshotId=snapshots_id, DryRun=True)
 
 
+
+
+
+
 ####### happy path for log_of_snapshots_ids_and_dates()
 def test_log_of_snapshots_ids_and_dates():
-    snapshots_id = 'snap-0ad3582cfacf4acba'
-    snapshots_date = datetime.date(2023, 6, 20)
-    log_of_snapshots_ids_and_dates()
+    snapshots_id_1 = 'snap-0ad3582cfacf4acba'
+    snapshots_id_2 = 'snap-0ad3582cfacf4aabc'
+    snapshots_date_1 = datetime.date(2023, 6, 20)
+    snapshots_date_2 = datetime.date(2023, 6, 21)
     pass
+    # log_of_snapshots_ids_and_dates()
+    # assert log_of_snapshots_ids_and_dates() == [snapshot_log, retrieve_snapshot_logs]
+
+
+
+
+
 
 ####### happy path for def lambda_handler(event, context)
 def lambda_handler(event, context):
