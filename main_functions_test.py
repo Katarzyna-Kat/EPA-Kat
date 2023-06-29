@@ -1,7 +1,7 @@
 from datetime import timedelta
 import datetime
 from unittest.mock import Mock
-from main_code.main_functions import (deletion_of_snapshots_function)
+from main_code.main_functions import deletion_of_snapshots_function
 
 
 def test_date_limit_function():
@@ -27,3 +27,11 @@ def test_invalid_snapshot_deletion_of_snapshots_function():
     if snapshots_id != "snap-0ad3582cfacf4acba":
         result = True
     assert result == True
+
+# ########
+# def test_retrieve_snapshot_logs():
+#     returned_results = log_of_snapshots_ids_and_dates.retrieve_snapshot_logs
+#     result = returned_results
+#     if result.type() == dict:
+#         function_return_dictionary = True
+#         assert function_return_dictionary == True
