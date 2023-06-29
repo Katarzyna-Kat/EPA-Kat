@@ -3,7 +3,9 @@ name: "Lambda Deployment"
 run-name: ${{ github.ref_name }} by @${{ github.actor  }}
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+  pull_request:
+    branches: main
 
 # env:
 #   TF_CLOUD_ORGANIZATION: "kpolonkiewicz"
