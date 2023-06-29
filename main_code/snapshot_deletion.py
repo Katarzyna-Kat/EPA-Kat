@@ -17,7 +17,7 @@ def lambda_handler(event, context):
         if today_delta.days > days_for_deletion:
             deletion_of_snapshots_function(snapshots_id, snapshots_date, dry_run)
 
-        elif days_for_email < today_delta.days < dateDiff.day:
+        elif days_for_email < today_delta.days < days_for_deletion:
             snapshot_log(snapshots_id, snapshots_date)
 
     sns_client.publish(
