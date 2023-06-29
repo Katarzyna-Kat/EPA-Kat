@@ -46,3 +46,15 @@ def test_invalid_snapshot_deletion_of_snapshots_function():
 #     snapshots_date = datetime.date(2023, 6, 20)
 #     lambda_handler(event, context)
 #     pass
+
+def test_date_limit_function():
+    result_1 = datetime.today() - timedelta(days = 3)
+    # result_2 = datetime.today() - timedelta(days = 1)
+    assert result_1 == True
+    
+
+
+# def date_limit_function(today_date):
+#     dateDiff = today_date - timedelta(days = 3)
+#     dateDiffEmail = today_date - timedelta(days = 1)
+#     return [dateDiff, dateDiffEmail]
