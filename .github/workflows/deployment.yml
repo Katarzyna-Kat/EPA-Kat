@@ -3,13 +3,9 @@ name: "Lambda Deployment"
 run-name: ${{ github.ref_name }} by @${{ github.actor  }}
 
 on:
-  workflow_dispatch
-
-# env:
-#   TF_CLOUD_ORGANIZATION: "kpolonkiewicz"
-#   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
-#   TF_WORKSPACE: "EPA-terraform-github-actions"
-#   CONFIG_DIRECTORY: "./"
+  workflow_dispatch:
+  # pull_request:
+  #   branches: main
 
 jobs:
   tf_fmt:
@@ -28,19 +24,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-north-1
 
-    # - name: Run pytest
-    #   run: |
-    #     pip install -r requirements.txt
-    #     pytest
+    - name: Run pytest
+      run: |
+        pip install -r requirements.txt
+        pytest
 
     - name: Checkout Repo
       uses: actions/checkout@v1
-
-    # - name: Terraform Init
-    #   uses: hashicorp/terraform-github-actions/init@v0.4.0
-    #   with:
-    #     workspace: ${{ env.TF_WORKSPACE }}
-    #     directory: ${{ env.CONFIG_DIRECTORY }}
 
     - name: Terraform init
       run: |
