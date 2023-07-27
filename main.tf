@@ -100,7 +100,7 @@ resource "aws_lambda_function" "lambda" {
 resource "aws_cloudwatch_event_rule" "every_2_days" {
     name = "every_2_days"
     description = "Trigger to run once every 2 days"
-    schedule_expression = "cron(0/5 8-24 ? * MON-FRI *)"
+    schedule_expression = "cron(0 20 ? * MON-FRI *)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda_2_days" {
