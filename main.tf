@@ -109,7 +109,7 @@ resource "aws_cloudwatch_event_target" "lambda_5_days" {
     arn = aws_lambda_function.lambda.arn
     input = <<JSON
   {
-    "dry_run": false
+    "dry_run": true
   }
   JSON
 }
