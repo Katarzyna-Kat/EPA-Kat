@@ -17,7 +17,7 @@ provider "archive" {}
 data "archive_file" "zip" {
   type        = "zip"
   source_dir = "${var.upload_file_path}/"
-  output_path = "snapshot_deletion.zip"
+  output_path = "lambda_snapshot_deletion.zip"
 }
 
 ### trust relationship
