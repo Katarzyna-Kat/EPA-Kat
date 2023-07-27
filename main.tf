@@ -97,19 +97,19 @@ resource "aws_lambda_function" "lambda" {
 }
 
 ##### trigger
-resource "aws_cloudwatch_event_rule" "every_2_days" {
-    name = "every_2_days"
-    description = "Trigger to run once every 2 days"
-    schedule_expression = "cron(0 20 ? * MON-FRI *)"
+resource "aws_cloudwatch_event_rule" "every_3_days" {
+    name = "every_3_days"
+    description = "Trigger to run once every 3 days"
+    schedule_expression = "cron(10 22 ? * MON-FRI *)"
 }
 
-resource "aws_cloudwatch_event_target" "lambda_2_days" {
-    rule = aws_cloudwatch_event_rule.every_2_days.name
+resource "aws_cloudwatch_event_target" "lambda_3_days" {
+    rule = aws_cloudwatch_event_rule.every_3_days.name
     target_id = "lambda"
     arn = aws_lambda_function.lambda.arn
     input = <<JSON
   {
-    "dry_run": true
+    "dry_run": false
   }
   JSON
 }
@@ -119,5 +119,5 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
     action = "lambda:InvokeFunction"
     function_name = aws_lambda_function.lambda.function_name
     principal = "events.amazonaws.com"
-    source_arn = aws_cloudwatch_event_rule.every_2_days.arn
+    source_arn = aws_cloudwatch_event_rule.every_3_days.arn
 }

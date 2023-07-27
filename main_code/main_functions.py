@@ -10,7 +10,7 @@ dateToday = datetime.datetime.now()
 
 
 def date_limit_function(today_date):
-    dateDiff = today_date - timedelta(days = 2)
+    dateDiff = today_date - timedelta(days = 3)
     dateDiffEmail = today_date - timedelta(days = 1)
     return [dateDiff, dateDiffEmail]
 
