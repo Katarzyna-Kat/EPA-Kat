@@ -87,11 +87,11 @@ resource "aws_iam_role_policy_attachment" "Policy_attachment_S3" {
 }
 
 resource "aws_lambda_function" "lambda" {
-  function_name = "snapshot_deletion"
+  function_name = "lambda_snapshot_deletion"
   filename         = data.archive_file.zip.output_path
   source_code_hash = data.archive_file.zip.output_base64sha256
   role    = aws_iam_role.snapshot_deletion_lambda.arn
-  handler = "snapshot_deletion.lambda_handler"
+  handler = "lambda_snapshot_deletion.lambda_handler"
   runtime = "python3.9"
   timeout = "60"
 }
