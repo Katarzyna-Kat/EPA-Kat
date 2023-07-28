@@ -135,7 +135,7 @@ resource "aws_cloudwatch_metric_alarm" "errors" {
   threshold                 = 1
   alarm_description         = "This metric monitors errors that appear in lambda"
   actions_enabled     = "true"
-  alarm_actions       = [aws_sns_topic.sns.arn:aws:sns:eu-north-1:867736086712:lambda_snapshot_deletion]
+  alarm_actions       = [lambda_snapshot_deletion.sns.'arn:aws:sns:eu-north-1:867736086712:lambda_snapshot_deletion']
   insufficient_data_actions = []
   dimensions = {
     FunctionName = "lambda_snapshot_deletion"
