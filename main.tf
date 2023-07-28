@@ -127,12 +127,25 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
 resource "aws_cloudwatch_metric_alarm" "errors" {
   alarm_name                = "lambda-errors"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
-  evaluation_periods        = 1
+  evaluation_periods        = 2
   metric_name               = "Errors"
   namespace                 = "AWS/Lambda"
   period                    = 3600
   statistic                 = "Average"
-  threshold                 = 80
+  threshold                 = 1
   alarm_description         = "This metric monitors errors that appear in lambda"
+  insufficient_data_actions = []
+}
+
+resource "aws_cloudwatch_metric_alarm" "cpu" {
+  alarm_name                = "CPU"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = 2
+  metric_name               = "CPUUtilization"
+  namespace                 = "AWS/EC2"
+  period                    = 3600
+  statistic                 = "Average"
+  threshold                 = 0.4
+  alarm_description         = "This metric monitors ec2 cpu utilization"
   insufficient_data_actions = []
 }
