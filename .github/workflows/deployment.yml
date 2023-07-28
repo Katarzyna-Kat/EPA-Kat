@@ -32,8 +32,8 @@ jobs:
 
     - name: Run pytest
       run: |
-        pip3 install -r /EPA-KAT/requirements.txt
-        pytest main_functions_test.py
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
     - name: Checkout Repo
       uses: actions/checkout@v1
