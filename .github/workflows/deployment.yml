@@ -4,8 +4,8 @@ run-name: ${{ github.ref_name }} by @${{ github.actor  }}
 
 on:
   workflow_dispatch:
-  # pull_request:
-  #   branches: main
+  pull_request:
+    branches: main
 
 jobs:
   tf_fmt:
