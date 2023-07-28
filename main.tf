@@ -166,7 +166,6 @@ resource "aws_cloudwatch_metric_alarm" "S3_size" {
   evaluation_periods        = 2
   metric_name               = "BucketSizeBytes"
   namespace                 = "AWS/S3"
-  period                    = 86400
   statistic                 = "Average"
   threshold                 = 2000000
   alarm_description         = "This metric monitors ec2 cpu utilization"
