@@ -30,19 +30,24 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-north-1
 
-    # - name: Run pytest
+    - name: Run Python commands
+      run: |
+        python3.10 -m venv env
+        source env/bin/activate
+        echo "VIRTUAL ENV:" $VIRTUAL_ENV
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    # - name: Test with pytest
     #   run: |
-    #     pip install -r requirements.txt
-    #     pytest
+    #     pytest main_functions_test.py
 
     - name: Checkout Repo
       uses: actions/checkout@v1
-
-    # - name: Terraform Init
-    #   uses: hashicorp/terraform-github-actions/init@v0.4.0
-    #   with:
-    #     workspace: ${{ env.TF_WORKSPACE }}
-    #     directory: ${{ env.CONFIG_DIRECTORY }}
 
     - name: Terraform init
       run: |

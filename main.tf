@@ -17,7 +17,7 @@ provider "archive" {}
 data "archive_file" "zip" {
   type        = "zip"
   source_dir = "${var.upload_file_path}/"
-  output_path = "snapshot_deletion.zip"
+  output_path = "lambda_snapshot_deletion.zip"
 }
 
 ### trust relationship
@@ -87,29 +87,29 @@ resource "aws_iam_role_policy_attachment" "Policy_attachment_S3" {
 }
 
 resource "aws_lambda_function" "lambda" {
-  function_name = "snapshot_deletion"
+  function_name = "lambda_snapshot_deletion"
   filename         = data.archive_file.zip.output_path
   source_code_hash = data.archive_file.zip.output_base64sha256
   role    = aws_iam_role.snapshot_deletion_lambda.arn
-  handler = "snapshot_deletion.lambda_handler"
+  handler = "lambda_snapshot_deletion.lambda_handler"
   runtime = "python3.9"
   timeout = "60"
 }
 
 ##### trigger
-resource "aws_cloudwatch_event_rule" "every_5_days" {
-    name = "every_5_days"
-    description = "Trigger to run once every 5 days"
-    schedule_expression = "cron(0/30 8-16 ? * MON-FRI *)"
+resource "aws_cloudwatch_event_rule" "every_3_days" {
+    name = "every_3_days"
+    description = "Trigger to run once every 3 days"
+    schedule_expression = "cron(0 11 ? * MON-FRI *)"
 }
 
-resource "aws_cloudwatch_event_target" "lambda_5_days" {
-    rule = aws_cloudwatch_event_rule.every_5_days.name
+resource "aws_cloudwatch_event_target" "lambda_3_days" {
+    rule = aws_cloudwatch_event_rule.every_3_days.name
     target_id = "lambda"
     arn = aws_lambda_function.lambda.arn
     input = <<JSON
   {
-    "dry_run": false
+    "dry_run": true
   }
   JSON
 }
@@ -119,5 +119,5 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
     action = "lambda:InvokeFunction"
     function_name = aws_lambda_function.lambda.function_name
     principal = "events.amazonaws.com"
-    source_arn = aws_cloudwatch_event_rule.every_5_days.arn
+    source_arn = aws_cloudwatch_event_rule.every_3_days.arn
 }

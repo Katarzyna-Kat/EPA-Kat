@@ -1,10 +1,12 @@
 .terraform
 .terraform.lock.hcl
 .terraform.tfstate.backup
-snapshot_deletion.zip
+lambda_snapshot_deletion.zip
 lambda-email.zip
 terraform.tfstate
 tfplan.out
 terraform.tfstate.backup
 __pycache__
 terraform.tfvars
+.venv
+.pytest_cache

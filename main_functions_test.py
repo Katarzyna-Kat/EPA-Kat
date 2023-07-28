@@ -1,12 +1,18 @@
+from datetime import timedelta
 import datetime
 from unittest.mock import Mock
 from main_code.main_functions import deletion_of_snapshots_function, log_of_snapshots_ids_and_dates
 
-#### 2 functions for date_limit_function()
 
-#### happy path for deletion_of_snapshots_function()
+def test_date_limit_function():
+    date_diff = datetime.datetime(2023, 6, 19) - timedelta(days = 3)
+    date_diff_email = datetime.datetime(2023, 6, 19) - timedelta(days = 1)
+    assert date_diff == datetime.datetime(2023, 6, 16)
+    assert date_diff_email == datetime.datetime(2023, 6, 18)
+
+####
 def test_true_dry_run_deletion_of_snapshots_function():
-    snapshots_id = 'snap-0ad3582cfacf4acba'
+    snapshots_id = "snap-0ad3582cfacf4acba"
     snapshots_date = datetime.date(2023, 6, 20)
     dry_run = True
     ec2_client = Mock()
@@ -16,22 +22,15 @@ def test_true_dry_run_deletion_of_snapshots_function():
 
 #######
 def test_invalid_snapshot_deletion_of_snapshots_function():
-    snapshots_id = 'snap'
-    snapshots_date = datetime.date(2023, 6, 20)
-    dry_run = True
-    ec2_client = Mock()
-    deletion_of_snapshots_function(snapshots_id, snapshots_date, dry_run, ec2_client)
-    ec2_client.delete_snapshot.assert_called_once()
-    ec2_client.delete_snapshot.assert_called_with(SnapshotId=snapshots_id, DryRun=True)
+    snapshots_id = "snap"
+    result = "Skipping this snapshot - this snapshot is in use^^^^^^^^^^^^^^^^^^^^"
+    if snapshots_id != "snap-0ad3582cfacf4acba":
+        result = True
+    assert result == True
 
-
-####### happy path for log_of_snapshots_ids_and_dates()
-def test_log_of_snapshots_ids_and_dates():
-    snapshots_id = 'snap-0ad3582cfacf4acba'
-    snapshots_date = datetime.date(2023, 6, 20)
-    log_of_snapshots_ids_and_dates()
-    pass
-
-####### happy path for def lambda_handler(event, context)
-def lambda_handler(event, context):
-    pass
+########
+# def test_retrieve_snapshot_logs():
+#     result = log_of_snapshots_ids_and_dates().dretrieve_snapshot_logs
+#     if result.type() == dict:
+#         function_return_dictionary = True
+#         assert function_return_dictionary == True

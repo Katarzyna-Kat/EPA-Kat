@@ -3,14 +3,6 @@ from datetime import datetime, timedelta
 import datetime
 import getopt
 
-############################################################
-# leifCleanAwsEc2Snapshots
-# Script will delete all snapshots created before dateLimit.
-# ALL SNAPSHOTS OLDER THAN THIS DATE WILL BE DELETED!!!
-dateLimit = datetime.datetime(2023, 6, 19)
-dateEmail = datetime.datetime(2023, 6, 23)
-############################################################
-
 # AWS Settings
 ec2_client = boto3.client("ec2", region_name="eu-north-1")
 snapshots = ec2_client.describe_snapshots(OwnerIds=["867736086712"])
@@ -18,9 +10,8 @@ dateToday = datetime.datetime.now()
 
 
 def date_limit_function(today_date):
-    dateDiff = today_date - dateLimit
-    dateDiffEmail = today_date - dateEmail
-    # timedelta(days=1)
+    dateDiff = today_date - timedelta(days = 3)
+    dateDiffEmail = today_date - timedelta(days = 1)
     return [dateDiff, dateDiffEmail]
 
 

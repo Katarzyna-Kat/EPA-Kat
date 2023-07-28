@@ -1,5 +1,5 @@
 resource "aws_sns_topic" "user_updates" {
-  name = "snapshot_deletion"
+  name = "lambda_snapshot_deletion"
 }
 
 resource "aws_sns_topic_subscription" "user_updates_sqs_target" {
