@@ -121,3 +121,59 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
     principal = "events.amazonaws.com"
     source_arn = aws_cloudwatch_event_rule.every_3_days.arn
 }
+
+
+##### alarms
+resource "aws_cloudwatch_metric_alarm" "errors" {
+  alarm_name                = "lambda-errors"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = 2
+  metric_name               = "Errors"
+  namespace                 = "AWS/Lambda"
+  period                    = 3600
+  statistic                 = "Average"
+  threshold                 = 1
+  alarm_description         = "This metric monitors errors that appear in lambda"
+  actions_enabled     = "true"
+  alarm_actions       = ["arn:aws:sns:eu-north-1:867736086712:lambda_snapshot_deletion"]
+  insufficient_data_actions = []
+  dimensions = {
+    FunctionName = "lambda_snapshot_deletion"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "cpu" {
+  alarm_name                = "CPU"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = 2
+  metric_name               = "CPUUtilization"
+  namespace                 = "AWS/EC2"
+  period                    = 3600
+  statistic                 = "Average"
+  threshold                 = 0.5
+  alarm_description         = "This metric monitors ec2 cpu utilization"
+  actions_enabled     = "true"
+  alarm_actions       = ["arn:aws:sns:eu-north-1:867736086712:lambda_snapshot_deletion"]
+  insufficient_data_actions = []
+  dimensions = {
+    InstanceId = "i-0a425e5ffbb6c01ec"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "S3_size" {
+  alarm_name                = "S3-size"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = 2
+  metric_name               = "BucketSizeBytes"
+  namespace                 = "AWS/S3"
+  period                    = 60
+  statistic                 = "Average"
+  threshold                 = 2000000
+  alarm_description         = "This metric monitors ec2 cpu utilization"
+  actions_enabled     = "true"
+  alarm_actions       = ["arn:aws:sns:eu-north-1:867736086712:lambda_snapshot_deletion"]
+  insufficient_data_actions = []
+  dimensions = {
+    BucketName = "tf-state-epa"
+    }
+}
