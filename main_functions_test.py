@@ -27,10 +27,3 @@ def test_invalid_snapshot_deletion_of_snapshots_function():
     if snapshots_id != "snap-0ad3582cfacf4acba":
         result = True
     assert result == True
-
-########
-# def test_retrieve_snapshot_logs():
-#     result = log_of_snapshots_ids_and_dates().dretrieve_snapshot_logs
-#     if result.type() == dict:
-#         function_return_dictionary = True
-#         assert function_return_dictionary == True
