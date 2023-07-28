@@ -34,7 +34,7 @@ jobs:
       run: |
         pip freeze > requirements.txt
         pip install -r requirements.txt
-        pytest
+        pytest main_functions_test.py
 
     - name: Checkout Repo
       uses: actions/checkout@v1
