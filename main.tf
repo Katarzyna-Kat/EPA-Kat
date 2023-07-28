@@ -121,3 +121,17 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
     principal = "events.amazonaws.com"
     source_arn = aws_cloudwatch_event_rule.every_3_days.arn
 }
+
+
+##### alarms
+resource "aws_cloudwatch_metric_alarm" "errors" {
+  alarm_name                = "lambda-errors"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = 1
+  metric_name               = "Errors"
+  namespace                 = "AWS/Lambda"
+  period                    = 3600
+  statistic                 = "Average"
+  alarm_description         = "This metric monitors errors that appear in lambda"
+  insufficient_data_actions = []
+}
