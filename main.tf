@@ -132,6 +132,7 @@ resource "aws_cloudwatch_metric_alarm" "errors" {
   namespace                 = "AWS/Lambda"
   period                    = 3600
   statistic                 = "Average"
+  threshold                 = 80
   alarm_description         = "This metric monitors errors that appear in lambda"
   insufficient_data_actions = []
 }
