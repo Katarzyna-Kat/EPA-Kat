@@ -1,7 +1,7 @@
 from datetime import timedelta
 import datetime
 from unittest.mock import Mock
-from main_code.main_functions import deletion_of_snapshots_function, log_of_snapshots_ids_and_dates
+from main_code.main_functions import deletion_of_snapshots_function
 
 
 def test_date_limit_function():

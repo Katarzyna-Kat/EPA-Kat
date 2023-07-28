@@ -2,3 +2,4 @@ pytest==7.4.0
 unittest2
 black
 python-dotenv
+boto3

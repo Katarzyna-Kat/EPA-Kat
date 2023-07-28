@@ -40,7 +40,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest main_functions_test.py
+        pytest test_main_functions.py
 
 
 
