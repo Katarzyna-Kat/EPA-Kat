@@ -3,7 +3,7 @@ variable "aws_region" {
 }
 
 variable "email" {
-  default     = "k.polonkiewicz@gmail.com"
+  default     = "katarzyna.polonkiewicz@kpmg.co.uk"
 }
 
 variable "upload_file_path" {
