@@ -32,8 +32,7 @@ jobs:
 
     - name: Run pytest
       run: |
-        pip freeze > requirements.txt
-        pip install -r requirements.txt
+        pip3 install -r /EPA-KAT/requirements.txt
         pytest main_functions_test.py
 
     - name: Checkout Repo
