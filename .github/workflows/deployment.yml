@@ -7,12 +7,6 @@ on:
   pull_request:
     branches: main
 
-# env:
-#   TF_CLOUD_ORGANIZATION: "kpolonkiewicz"
-#   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
-#   TF_WORKSPACE: "EPA-terraform-github-actions"
-#   CONFIG_DIRECTORY: "./"
-
 jobs:
   tf_fmt:
     name: Deploy Lambda
