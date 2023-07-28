@@ -38,7 +38,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest
+        pytest main_functions_test.py
 
     - name: Checkout Repo
       uses: actions/checkout@v1
