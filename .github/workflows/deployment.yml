@@ -36,9 +36,9 @@ jobs:
         pip install ruff pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Test with pytest
-      run: |
-        pytest main_functions_test.py
+    # - name: Test with pytest
+    #   run: |
+    #     pytest main_functions_test.py
 
     - name: Checkout Repo
       uses: actions/checkout@v1

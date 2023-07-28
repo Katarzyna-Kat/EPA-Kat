@@ -100,7 +100,7 @@ resource "aws_lambda_function" "lambda" {
 resource "aws_cloudwatch_event_rule" "every_3_days" {
     name = "every_3_days"
     description = "Trigger to run once every 3 days"
-    schedule_expression = "cron(0 10 ? * MON-FRI *)"
+    schedule_expression = "cron(0 11 ? * MON-FRI *)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda_3_days" {
@@ -109,7 +109,7 @@ resource "aws_cloudwatch_event_target" "lambda_3_days" {
     arn = aws_lambda_function.lambda.arn
     input = <<JSON
   {
-    "dry_run": false
+    "dry_run": true
   }
   JSON
 }
